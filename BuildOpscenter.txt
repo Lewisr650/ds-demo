@@ -27,7 +27,7 @@ sudo apt-get install oracle-java8-unlimited-jce-policy -y
 ;;
 //Add Datastax Repository to Linux OS
 echo “ Adding Datastax private repository to system repository…"
-echo "deb https://rlewis_datastax.com:ae8a576rCrTY6hw@debian.datastax.com/enterprise stable main" | sudo tee -a /etc/apt/sources.list.d/datastax.sources.list
+echo "deb https://<username>:<password>@debian.datastax.com/enterprise stable main" | sudo tee -a /etc/apt/sources.list.d/datastax.sources.list
 ;;
 //Add Datastax repo key to OS
 echo “Adding Datastax repository key to system keys…"
