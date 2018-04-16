@@ -1,0 +1,76 @@
+// This data can be found here:
+http://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/search/tutorialsDemosTOC.html
+
+//Download data from here:
+wget http://www.datastax.com/documentation/tutorials/solr_tutorial46.zip
+
+//Create a Keyspace that emulates your configuration:
+CREATE KEYSPACE nhanes_ks WITH REPLICATION = {'class' : 'NetworkTopologyStrategy', ‘Primary' : 3,'Analytics' : 3, 'Search' : 3};
+
+//Use the keyspace you just created:
+USE nhanes_ks;
+
+//Create the table to load data into in your Primary data center:
+create table if not exists nhanes (
+"id" INT,
+"num_smokers" INT,
+"age" INT,
+"age_unit" VARCHAR,
+"age_months" INT,
+"major_medical_coverage" VARCHAR,
+"dental_coverage" VARCHAR,
+"routine_medical_coverage" VARCHAR,
+"employer_paid_plan" VARCHAR,
+"secondary_smoke" VARCHAR,
+"county" VARCHAR,
+"screening_month" VARCHAR,
+"pets" VARCHAR,
+"asthma" VARCHAR,
+"bronchitis" VARCHAR,
+"goiter" VARCHAR,
+"hay_fever" VARCHAR,
+"thyroid_disease" VARCHAR,
+"chronic_bronchitis" VARCHAR,
+"diagnosed_asthma" VARCHAR,
+"diagnosed_cataracts" VARCHAR,
+"diagnosed_emphysema" VARCHAR,
+"diagnosed_goiter" VARCHAR,
+"diagnosed_gout" VARCHAR,
+"diagnosed_hay_fever" VARCHAR,
+"diagnosed_lupus" VARCHAR,
+"diagnosed_other_cancer" VARCHAR,
+"diagnosed_skin_cancer" VARCHAR,
+"diagnosed_stroke" VARCHAR,
+"diagnosed_thyroid_disease" VARCHAR,
+"diagnosed_congestive_heart_failure" VARCHAR,
+"ethnicity" VARCHAR,
+"exam_status" VARCHAR,
+"family_sequence" INT,
+"family_size" INT,
+"fips" VARCHAR,
+"grade_completed" VARCHAR,
+"household_size" INT,
+"health_status" VARCHAR,
+"marital_status" VARCHAR,
+"bird" VARCHAR,
+"cat" VARCHAR,
+"dog" VARCHAR,
+"fish" VARCHAR,
+"other_pet" VARCHAR,
+"race" VARCHAR,
+"race_ethnicity" VARCHAR,
+"gender" VARCHAR,
+"birthplace" VARCHAR,
+"annual_income_20000" VARCHAR,
+"income_group" INT,
+"monthly_income_total" INT,
+PRIMARY KEY ("id", "age"));
+
+//Copy the data from CSV into the table space
+copy nhanes ("id","num_smokers","age","age_unit","age_months","major_medical_coverage","dental_coverage","routine_medical_coverage","employer_paid_plan","secondary_smoke","county","screening_month","pets","asthma","bronchitis","goiter","hay_fever","thyroid_disease","chronic_bronchitis","diagnosed_asthma","diagnosed_cataracts","diagnosed_emphysema","diagnosed_goiter","diagnosed_gout","diagnosed_hay_fever","diagnosed_lupus","diagnosed_other_cancer","diagnosed_skin_cancer","diagnosed_stroke","diagnosed_thyroid_disease","diagnosed_congestive_heart_failure","ethnicity","exam_status","family_sequence","family_size","fips","grade_completed","household_size","health_status","marital_status","bird","cat","dog","fish","other_pet","race","race_ethnicity","gender","birthplace","annual_income_20000","income_group","monthly_income_total") from './nhanes52.csv';
+
+//Create the DSE Search core on a Search Node:
+./dsetool create_core nhanes_ks.nhanes distributed=true generateResources=true reindex=true -l cassandra -p cassandra
+
+
+
