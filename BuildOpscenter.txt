@@ -1,0 +1,48 @@
+Creating OpsCenter Image:
+#!/bin/bash
+echo “The script is setting up the Oracle Java Environment”
+;;
+// Add Oracle Java Repo to machine
+echo “Adding the Oracle repository to system repositories"
+sudo add-apt-repository ppa:webupd8team/java -y
+;;
+//Update apt-get
+echo “Updating apt-get…."
+sudo apt-get update -y
+;;
+//Install Oracle JDK 8
+each “Installing Oracle Java 8 JDK…input will be required"
+sudo apt-get install oracle-java8-installer -y
+;;
+//Set alternatives to point to JDK 8
+echo “Setting system to Java 8 alternatives…."
+sudo update-java-alternatives --set java-8-oracle 
+;;
+//Verify java version is Oracle JDK 8
+echo “Verifying which version of Oracle JDK is default…"
+java -version
+;;
+//Add JCE for Java encryption
+sudo apt-get install oracle-java8-unlimited-jce-policy -y
+;;
+//Add Datastax Repository to Linux OS
+echo “ Adding Datastax private repository to system repository…"
+echo "deb https://rlewis_datastax.com:ae8a576rCrTY6hw@debian.datastax.com/enterprise stable main" | sudo tee -a /etc/apt/sources.list.d/datastax.sources.list
+;;
+//Add Datastax repo key to OS
+echo “Adding Datastax repository key to system keys…"
+curl -L https://debian.datastax.com/debian/repo_key | sudo apt-key add -
+;;
+//Install Opscenter Using apt-get
+echo “Updating apt-get with new repository settings…"
+sudo apt-get update -y
+;;
+echo “Installing Opscenter from Datastax private repository…"
+sudo apt-get install opscenter -y
+;;
+//Start opscenter
+echo “Starting Opscenter daemon…"
+sudo service opscenterd start
+;;
+//Access Opscenter:
+//http://opscenter-host:8888/

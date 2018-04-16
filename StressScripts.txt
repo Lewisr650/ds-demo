@@ -1,0 +1,7 @@
+*Ubuntu needs Python installed on each machine.
+cassandra-stress write n=1000000 cl=ONE -mode native cql3 user=cassandra password=cassandra -node 172.31.30.193
+
+cassandra-stress write n=5000000 cl=ONE -mode native cql3 user=cassandra password=cassandra -node 172.31.62.20
+
+private ips for listen_address
+public ips for ssh address, broadcast_address, and rpc_broadcast_address
